@@ -1,9 +1,30 @@
 # Building software with a crew of AI agents
 
-This repo accompanies an **AI Tinkerers** talk on building real software with Claude Code —
-not one agent in a chat box, but a small **autonomous build crew** that takes a goal in plain
-language, designs the work, builds it on its own branch, has expert panels double-check it,
-and brings it back for a single human yes/no before anything ships.
+> *Companion repo for an **AI Tinkerers** talk — building real software with a crew of Claude
+> Code agents, not one agent in a chat box.*
+
+## The talk
+
+**A dark factory for code: an autonomous, multi-agent build crew in Claude Code.**
+
+I describe what I want in plain language, and a crew of Claude agents does the labour —
+designing, building, testing, and double-checking — with a single human yes/no before anything
+lands on `main`. Work is batched into *waves*: each wave splits into tasks, and every task runs
+a fixed five-stage cycle — **brainstorm → implement → test → review → wrap-up** — as its own
+Claude Code subagent in its own git worktree, so many build in parallel without colliding. The
+factory runs each agent as a full interactive Claude session in a **tmux** pane (rather than
+headless `claude -p`), signalled complete by a Stop-hook; I drive and watch the windows through
+**cmux**. The whole run is journaled to an on-disk ledger, so it survives reboots and resumes
+where it left off.
+
+The quality net is a Claude Code skill I lean on constantly — a **talmudic study**, where *N*
+orthogonal expert agents each write an independent position on a design, then argue it out
+(filing challenges, conceding points, revising) until a redactor synthesizes one settled design
+with the dissent preserved. The factory runs two of these panels over every finished wave and
+auto-spawns corrective tasks for anything they catch. Then it parks the wave at a "front desk"
+and asks the only question I ever have to answer: merge, or hold? I'll show how it's wired and
+share the two pieces that do the most work — the talmudic-study skill, and the plain-language
+map of the factory itself.
 
 Two things are shared here. Both are deliberately **product-agnostic** — the patterns work on
 any codebase.
